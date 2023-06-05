@@ -1,0 +1,5 @@
+backend/scaner_venv
+*__pycache__
+backend/migrations/versions
+backend/migrations/Readme
+backend/parser/driver
