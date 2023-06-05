@@ -1,6 +1,6 @@
 
 Инициализировать каталог
-alembic init migration
+alembic init migrations
 
 Создать миграцию
     alembic revision --autogenerate -m “First commit5”
