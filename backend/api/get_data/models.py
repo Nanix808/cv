@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text, JSON
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text, JSON, TEXT
 from sqlalchemy.dialects.mysql import INTEGER
 from api.database import Base
 from sqlalchemy.orm import mapped_column
@@ -18,7 +18,7 @@ class Resume(Base):
     # поле в которое можно передавать значение "parsing", "pdf", "word"
     source = mapped_column(sqlalchemy.Enum("parsing", "pdf", "word", name="source_enum"))
      # поле со всем текстом резюме
-    content = mapped_column(String(16384), nullable=False)
+    content = mapped_column(TEXT, nullable=False)
     created_on = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     # поле в которое не обязательно передавать значение по умолчанию поставит TRUE
     available = Column(Boolean, nullable=False, default=True)
