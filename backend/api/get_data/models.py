@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text, JSON
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text, JSON, Text
 from sqlalchemy.dialects.mysql import INTEGER
 from api.database import Base
 from sqlalchemy.orm import mapped_column
@@ -18,7 +18,7 @@ class Resume(Base):
     # поле в которое можно передавать значение "parsing", "pdf", "word"
     source = mapped_column(sqlalchemy.Enum("parsing", "pdf", "word", name="source_enum"))
      # поле со всем текстом резюме
-    content = mapped_column(String(16384), nullable=False)
+    content = mapped_column(Text, nullable=False)
     created_on = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
     # поле в которое не обязательно передавать значение по умолчанию поставит TRUE
     available = Column(Boolean, nullable=False, default=True)
@@ -30,11 +30,11 @@ class Resume(Base):
     # поле в которое можно передавать значение "m", "f"
     gender: Mapped[Optional[str]] = mapped_column(sqlalchemy.Enum("m", "f", name="gender_enum"))
     # поле в которое можно передавать значение "hight", "low"
-    education: Mapped[Optional[str]] = mapped_column(sqlalchemy.Enum("hight", "low", name="education_enum"), nullable=True)
+    education: Mapped[Optional[str]] = mapped_column(sqlalchemy.Enum("high", "low", name="education_enum"), nullable=True)
     experience: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
-    skils: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    skills: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     profession: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     languages: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     courses: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
-    computer_skils: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    computer_skills: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
    

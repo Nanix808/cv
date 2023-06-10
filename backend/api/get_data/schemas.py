@@ -13,7 +13,7 @@ class Gender(Enum):
 
 class Education(Enum):
     none: float = None
-    male = 'hight'
+    male = 'high'
     female = 'low'
 
 
@@ -34,11 +34,11 @@ class ResumeCreate(TunedModel):
     gender: Optional[Gender]
     education: Optional[Education]
     experience: Optional[str]
-    skils: Optional[str]
+    skills: Optional[str]
     profession: Optional[str]
     languages: Optional[str]
     courses: Optional[str]
-    computer_skils: Optional[str]
+    computer_skills: Optional[str]
 
 
     class Config:  
@@ -61,11 +61,11 @@ class ShowResume(TunedModel):
     gender: Optional[str]
     education: Optional[str]
     experience: Optional[str]
-    skils: Optional[str]
+    skills: Optional[str]
     profession: Optional[str]
     languages: Optional[str]
     courses: Optional[str]
-    computer_skils: Optional[str] 
+    computer_skills: Optional[str] 
 
 
     @validator('content')
@@ -86,11 +86,11 @@ class CreateShowResume(TunedModel):
     gender: Optional[str]
     education: Optional[str]
     experience: Optional[str]
-    skils: Optional[str]
+    skills: Optional[str]
     profession: Optional[str]
     languages: Optional[str]
     courses: Optional[str]
-    computer_skils: Optional[str] 
+    computer_skills: Optional[str] 
 
 
     @validator('content')
