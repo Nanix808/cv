@@ -11,12 +11,13 @@ DATABASE_URL = f"mysql+asyncmy://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB
 
 # DATABASE_URL = "mysql+asyncmy://scaner_user:scaner_user1@localhost:3306/scaner_db"
 engine = create_async_engine(DATABASE_URL, future=True, echo=True)
-async_session =sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+async_session = sessionmaker(
+    engine, expire_on_commit=False, class_=AsyncSession)
 
 
 async def get_db() -> Generator:
     try:
-        session : AsyncSession = async_session()
+        session: AsyncSession = async_session()
         yield session
     finally:
         await session.close()
