@@ -3,3 +3,4 @@ backend/scaner_venv
 backend/migrations/versions/*.*
 backend/migrations/Readme
 backend/parser/driver
+frontend/
