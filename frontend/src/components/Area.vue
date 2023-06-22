@@ -48,7 +48,9 @@ import {
   // PropType,
   toRefs,
 } from 'vue';
-
+import * as PDFJS from "pdfjs-dist";
+import "pdfjs-dist/web/pdf_viewer.css";
+PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
 
 
 export default {
@@ -73,14 +75,26 @@ export default {
    
    
 
-    const uploadFile = async (event) => {
-      console.log(event)
-      if (event.target.files) {
-        emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
-      }
+    const uploadFile =(event) => {
+      
+      // if (event.target.files) {
+      //   emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
+      // }
+      // console.log(event)
+      const file1 = event.target.files[0]
+      console.log(file1)
+      const fileReader = new window.FileReader()
+      fileReader.readAsDataURL(file1)
+      fileReader.onload=()=>{
+        let res = fileReader.result;
+      
 
-  
-     
+      const ffr = PDFJS.getDocument(res)
+      console.log('ffr', ffr)
+      // .then((doc) => {
+      // console.log("doc: ", doc);
+      //       });
+          }
     
       if (input.value) {
         input.value.value = '';
@@ -101,6 +115,8 @@ export default {
       if (needToUpload.value > 0) {
         return `Вы загрузили ${needToUpload.value} 'резюме'`;
       }
+
+      
 
       if (needToUpload.value === 0) {
         return 'Загрузите резюме';
