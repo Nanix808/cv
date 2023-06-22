@@ -2,7 +2,7 @@
   <div class="file-uploader">
     <div
       class="file-uploader__wrapper"
-    
+      :class="{ 'file-uploader__wrapper--drag': isDragStarted }"
     >
       <input
         accept="application/pdf"
@@ -18,12 +18,12 @@
       >
       
       {{ isDragStarted ? '' : uploadText }}
-      <!-- <img
+      <img
         v-show="isDragStarted"
         src="@/assets/images/upload.svg"
         class="file-uploader__icon"
         alt="Загрузите фото"
-      > -->
+      >
     </div>
     <div class="file-uploader__files">
       <div
@@ -33,12 +33,11 @@
         <button
           class="file-uploader__remove"
         
-        />
-        <img
-         
-        >
+        > </button>
+        <img>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -50,7 +49,12 @@ import {
   toRefs,
 } from 'vue';
 
+
+
 export default {
+  components: {
+  
+  },
   props: {
     modelValue: {
       type: Array,
@@ -63,16 +67,21 @@ export default {
   setup(props, { emit }) {
     const { modelValue } = toRefs(props);
 
-
     const input = ref(null);
     const isDragStarted = ref(false);
 
-    const uploadFile = ({ currentTarget }) => {
-      if (currentTarget.files) {
-        console.log([...Array.from(currentTarget.files)])
-        emit('update:modelValue', [...modelValue.value, ...Array.from(currentTarget.files)]);
+   
+   
+
+    const uploadFile = async (event) => {
+      console.log(event)
+      if (event.target.files) {
+        emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
       }
 
+  
+     
+    
       if (input.value) {
         input.value.value = '';
       }
@@ -104,9 +113,6 @@ export default {
       uploadText,
       input,
       uploadFile,
-      // removefile,
-      // needToUpload,
-      // getSrc,
     };
   },
 };
@@ -122,7 +128,7 @@ export default {
     justify-content: center;
     align-items: center;
     border: 4px dotted #eee;
-    border-radius: 10px;
+    border-radius: 15px;
     color: rgba(#000, 0.5);
 
     &--drag {
