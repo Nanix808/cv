@@ -72,30 +72,82 @@ export default {
     const input = ref(null);
     const isDragStarted = ref(false);
 
-   
+   const extractText = async (path) => {
+        let pdf = await PDFJS.getDocument(path).promise
+        let pages = pdf.numPages
+        let pageText = []
+        for(let i=1; i<=pages; i++)
+        {   
+            let page = await pdf.getPage(i)
+            let texts = await page.getTextContent()
+            let text = texts.items.map((s)=>s.str).join(" ")
+            pageText.push(text)
+        }
+        let allText = pageText.join(" ")
+        return allText
+   }
+
+
+   const filesReader = (path) =>{
+      return new Promise((resolve) => {
+      const fileReader = new window.FileReader()
+      fileReader.readAsDataURL(path)
+      fileReader.onload = async ()=>{
+      let res = fileReader.result;
+      const text = await extractText(res)
+      resolve(text);  
+    }
+
+
+        // var reader = new FileReader();
+        // reader.onload = (e) => {
+        //     var img = new Image();
+        //     img.onload = function () {
+        //       resolve(false);
+        //     };
+        //     img.onerror = function () {
+        //       resolve(true);
+        //     };
+        //     img.src = e.target.result;
+        // }
+        // reader.readAsDataURL(file);
+    });
+  }
+
+
+  //  const filesReader = (path) => {
+
+  //   const fileReader = new window.FileReader()
+  //     fileReader.readAsDataURL(path)
+  //     fileReader.onload = async ()=>{
+
+  //     let res = fileReader.result;
+  //     await extractText(res)
+  //   }
    
 
-    const uploadFile =(event) => {
+  //  }
+   
+
+    const uploadFile = async (event) => {
       
       // if (event.target.files) {
       //   emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
       // }
-      // console.log(event)
-      const file1 = event.target.files[0]
-      console.log(file1)
-      const fileReader = new window.FileReader()
-      fileReader.readAsDataURL(file1)
-      fileReader.onload=()=>{
-        let res = fileReader.result;
+      const fileText = []
+      console.log(event.target.files.length)
+      for(let i=0; i< event.target.files.length; i++){
+        const file_path = event.target.files[i]
+        let text = await filesReader(file_path)
+        fileText.push(
+          {
+            id: i,
+            file_path : file_path,
+            text : text
+        })
+    } 
+    console.log(fileText[0].file_path)
       
-
-      const ffr = PDFJS.getDocument(res)
-      console.log('ffr', ffr)
-      // .then((doc) => {
-      // console.log("doc: ", doc);
-      //       });
-          }
-    
       if (input.value) {
         input.value.value = '';
       }
