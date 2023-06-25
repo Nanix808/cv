@@ -31,13 +31,14 @@
         class="file-uploader__file"
       >
         <button
+          @click="increment"
           class="file-uploader__remove"
         
         > </button>
         <img>
       </div>
     </div>
-    
+    {{ count }}
   </div>
 </template>
 
@@ -48,6 +49,7 @@ import {
   // PropType,
   toRefs,
 } from 'vue';
+import { useStore } from 'vuex'
 import * as PDFJS from "pdfjs-dist";
 import "pdfjs-dist/web/pdf_viewer.css";
 PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
@@ -68,7 +70,7 @@ export default {
 
   setup(props, { emit }) {
     const { modelValue } = toRefs(props);
-
+    const store = useStore()
     const input = ref(null);
     const isDragStarted = ref(false);
 
@@ -134,19 +136,19 @@ export default {
       // if (event.target.files) {
       //   emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
       // }
-      const fileText = []
-      console.log(event.target.files.length)
+      
       for(let i=0; i< event.target.files.length; i++){
         const file_path = event.target.files[i]
         let text = await filesReader(file_path)
-        fileText.push(
-          {
+        const fileText = Object.assign({}, {
             id: i,
             file_path : file_path,
             text : text
         })
+          
+        store.dispatch('addtext', fileText )
     } 
-    console.log(fileText[0].file_path)
+  
       
       if (input.value) {
         input.value.value = '';
@@ -181,6 +183,9 @@ export default {
       uploadText,
       input,
       uploadFile,
+      count: computed(() => store.state.count),
+      increment: () => store.dispatch('increment'),
+      decrement: () => store.dispatch('decrement'),
     };
   },
 };
