@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "pdfjs-dist": "^3.7.107",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
