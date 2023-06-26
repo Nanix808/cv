@@ -1,10 +1,12 @@
 <script >
 import { ref, watchEffect } from 'vue';
 import AreaUploader from '@/components/Area.vue';
+import TableWithStore from '@/components/Table_with_store.vue';
 
 export default {
   components: {
     AreaUploader,
+    TableWithStore
   },
 
   setup() {
@@ -35,6 +37,7 @@ export default {
   <div>
     <AreaUploader v-model="files">
     </AreaUploader>
+    <TableWithStore></TableWithStore>
     {{files }}
   </div>
 </template>

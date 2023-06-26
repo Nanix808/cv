@@ -1,5 +1,6 @@
 <template>
   <div class="file-uploader">
+    <div class="loader" v-if="loader"></div>
     <div
       class="file-uploader__wrapper"
       :class="{ 'file-uploader__wrapper--drag': isDragStarted }"
@@ -25,7 +26,7 @@
         alt="Загрузите фото"
       >
     </div>
-    <div class="file-uploader__files">
+    <!-- <div class="file-uploader__files">
       <div
       
         class="file-uploader__file"
@@ -37,8 +38,8 @@
         > </button>
         <img>
       </div>
-    </div>
-    {{ count }}
+    </div> -->
+
   </div>
 </template>
 
@@ -73,6 +74,8 @@ export default {
     const store = useStore()
     const input = ref(null);
     const isDragStarted = ref(false);
+    const loader = ref(false);
+
 
    const extractText = async (path) => {
         let pdf = await PDFJS.getDocument(path).promise
@@ -138,17 +141,18 @@ export default {
       // }
       
       for(let i=0; i< event.target.files.length; i++){
+        loader.value = true
         const file_path = event.target.files[i]
         let text = await filesReader(file_path)
         const fileText = Object.assign({}, {
-            id: i,
             file_path : file_path,
             text : text
         })
+
           
         store.dispatch('addtext', fileText )
     } 
-  
+    loader.value = false
       
       if (input.value) {
         input.value.value = '';
@@ -183,9 +187,9 @@ export default {
       uploadText,
       input,
       uploadFile,
-      count: computed(() => store.state.count),
+      loader,
+      count: computed(() => store.state.countId),
       increment: () => store.dispatch('increment'),
-      decrement: () => store.dispatch('decrement'),
     };
   },
 };
@@ -265,5 +269,20 @@ export default {
     opacity: 0.3;
     width: 50px;
   }
+}
+.loader {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #eceaea;
+  background-image: url('../src/assets/images/ajax-loader.gif');
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 10000000;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
 }
 </style>
