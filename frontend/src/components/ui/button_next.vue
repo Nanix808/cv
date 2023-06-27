@@ -14,7 +14,8 @@ export default {
     setup(props, {emit}) {
       const active = toRef(() => props.active)
       const click = () =>{
-        emit("clicks")
+        // console.log(active)
+        active.value ? emit("clicks") : ''
       }
 
       return {
