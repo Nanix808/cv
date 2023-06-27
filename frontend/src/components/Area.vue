@@ -26,19 +26,7 @@
         alt="Загрузите фото"
       >
     </div>
-    <!-- <div class="file-uploader__files">
-      <div
-      
-        class="file-uploader__file"
-      >
-        <button
-          @click="increment"
-          class="file-uploader__remove"
-        
-        > </button>
-        <img>
-      </div>
-    </div> -->
+ 
 
   </div>
 </template>
@@ -57,20 +45,21 @@ PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.
 
 
 export default {
+  
   components: {
   
   },
   props: {
-    modelValue: {
-      type: Array,
-      required: false,
-    },
+    // modelValue: {
+    //   type: Array,
+    //   required: false,
+    // },
   },
 
   emits: ['update:modelValue'],
 
   setup(props, { emit }) {
-    const { modelValue } = toRefs(props);
+    // const { modelValue } = toRefs(props);
     const store = useStore()
     const input = ref(null);
     const isDragStarted = ref(false);
@@ -103,36 +92,10 @@ export default {
       resolve(text);  
     }
 
-
-        // var reader = new FileReader();
-        // reader.onload = (e) => {
-        //     var img = new Image();
-        //     img.onload = function () {
-        //       resolve(false);
-        //     };
-        //     img.onerror = function () {
-        //       resolve(true);
-        //     };
-        //     img.src = e.target.result;
-        // }
-        // reader.readAsDataURL(file);
     });
   }
 
-
-  //  const filesReader = (path) => {
-
-  //   const fileReader = new window.FileReader()
-  //     fileReader.readAsDataURL(path)
-  //     fileReader.onload = async ()=>{
-
-  //     let res = fileReader.result;
-  //     await extractText(res)
-  //   }
-   
-
-  //  }
-   
+  
 
     const uploadFile = async (event) => {
       
@@ -167,16 +130,17 @@ export default {
 
     // const getSrc = (file: File) => URL.createObjectURL(file);
 
-    const needToUpload = computed(() => modelValue.value.length);
+    // const needToUpload = computed(() => modelValue.value.length);
 
     const uploadText = computed(() => {
-      if (needToUpload.value > 0) {
-        return `Вы загрузили ${needToUpload.value} 'резюме'`;
+  
+      if (store.getters.lengthTexts > 0) {
+        return `Вы загрузили ${store.getters.lengthTexts} резюме`;
       }
 
       
 
-      if (needToUpload.value === 0) {
+      if (store.getters.lengthTexts === 0) {
         return 'Загрузите резюме';
       }
     

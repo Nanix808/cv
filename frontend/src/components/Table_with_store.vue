@@ -20,7 +20,8 @@ export default {
       count: computed(() => store.state.count),
       lengthLoadingTexts: computed(() => store.getters.lengthTexts),
       allTexts: computed(() => store.getters.getAllTexts),
-      delText
+      delText,
+      clear_all: () => store.dispatch('clear'),
     //   increment: () => store.dispatch('increment'),
     //   decrement: () => store.dispatch('decrement'),
     };
@@ -69,8 +70,20 @@ export default {
                 </div>
               </td>
             </tr> 
+
+  
       
            </tbody>
+           <tfoot >
+              <tr class="clear_all"
+                  v-if="$store.getters.lengthTexts > 0"
+                  @click="clear_all"
+              >
+           
+              <td colspan="5"><span> Очистить все</span></td>
+    
+              </tr>
+              </tfoot>
         </table>
       </div>
 
@@ -170,8 +183,14 @@ max-width: 200px;
 width: 200px;
 }
 
-.allert {
-position: relative;
+
+
+.clear_all{
+    cursor: pointer;
+
+    &:hover{
+            color: red; 
+           } 
 }
 
 
