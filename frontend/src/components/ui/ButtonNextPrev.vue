@@ -1,5 +1,5 @@
 <script>
-import {toRef } from 'vue'
+import {toRef} from 'vue'
 
 export default {
 
@@ -9,18 +9,25 @@ export default {
       type: Boolean,
       required: false,
     },
-    emits: ['clicks'],
+    right: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
   },
+    emits: ['clicks'],
+  
     setup(props, {emit}) {
       const active = toRef(() => props.active)
+      const right = toRef(() => props.right)
       const click = () =>{
-        // console.log(active)
         active.value ? emit("clicks") : ''
       }
 
       return {
         active,
-        click
+        click, 
+        right
     };
     }
     }
@@ -30,13 +37,14 @@ export default {
 </script>
 
 <template>
-<button class="button button_right"
-        :class="{ 'active_button': active }"
+<button class="button"
+
+        :class="[right ? 'button_right':'button_left', active ? 'active_button':'']"
         @click="click"
-><span>Шаг №2</span></button>
+><span><slot></slot></span></button>
 
 </template>
-<style>
+<style scoped>
 .button {
   border-radius: 4px;
   background-color: #f4511e;
@@ -47,7 +55,7 @@ export default {
   padding: 12px;
   width: 200px;
   transition: all 0.5s;
- 
+  
   margin: 5px;
 }
 .button.active_button{
@@ -61,6 +69,25 @@ export default {
   position: relative;
   transition: 0.5s;
 }
+
+.button_left.active_button span::before {
+  content: '\00ab';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: -10px;
+  transition: 0.5s;
+}
+
+.button_left.active_button:hover span {
+  padding-left: 25px;
+}
+
+.button_left:hover span::before {
+  opacity: 1;
+  left: 0px; 
+}
+
 
 .button_right.active_button span:after {
   content: '\00bb';

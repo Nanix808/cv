@@ -4,13 +4,13 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import AreaUploader from '@/components/Area.vue';
 import TableWithStore from '@/components/Table_with_store.vue';
-import ButtonNext from '@/components/ui/button_next.vue';
+import ButtonNextPrev from '@/components/ui/button_next.vue';
 
 export default {
   components: {
     AreaUploader,
     TableWithStore,
-    ButtonNext
+    ButtonNextPrev
   },
 
   setup() {
@@ -52,12 +52,13 @@ export default {
 
 
     <div class="button_container">
-    <ButtonNext 
+    <ButtonNextPrev 
       @clicks="next_page"
       :active = "lengthLoadingTexts"
-    >
+      :right = true
+    > Шаг №2
 
-    </ButtonNext>
+    </ButtonNextPrev>
   </div>
 
 
