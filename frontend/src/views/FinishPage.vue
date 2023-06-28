@@ -17,17 +17,15 @@ export default {
 
     const prev_page = async () => {
         
-
-        await fetch("http://127.0.0.1:8000/api/v2/resume", {
-        method: 'POST',
-        body: 
-          {
+      const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
              "id": 0,
               "text": "string"
-          }
-        
-        
-    })
+          })
+          };
+      await fetch("http://127.0.0.1:8000/api/v2/resume", requestOptions)
       .then(async (response) => {
         const data = await response.json()
         console.log("data", data);

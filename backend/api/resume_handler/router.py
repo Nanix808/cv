@@ -10,8 +10,8 @@ resume_handler = APIRouter()
 
 @resume_handler.post("/resume")
 def read_all_resume(body: GetResume):
-    # resume_params = body.dict(exclude_none=True)
-    print(body)
+    resume_params = body.dict(exclude_none=True)
+    print(resume_params, body)
     return {'w':3}
 
 # @get_data.get("/resume/{resume_id}", response_model=ShowResume)
