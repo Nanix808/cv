@@ -17,7 +17,7 @@ export default {
   
 
     const next_page = () => {
-      console.log("dddd")
+      router.push({name: 'finish'})
       // pushWithQuery()
     }
     const prev_page = () => {

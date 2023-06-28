@@ -48,7 +48,6 @@ async def create_resume(body: ResumeCreate, db : AsyncSession = Depends(get_db))
             resume_dal = ResumeDAL(session)
 
             resume_params = body.dict(exclude_none=True)
-            print("updated_resume_params", resume_params)
             resume = await resume_dal.create_resume(
                 resume_params
             )
@@ -58,7 +57,7 @@ async def create_resume(body: ResumeCreate, db : AsyncSession = Depends(get_db))
 @get_data.patch("/resume/update", response_model = Resume_Get_Id)
 async def update_resume_by_id(resume_id: int, body: UpdateResume, db: AsyncSession = Depends(get_db)) -> Resume_Get_Id:
     updated_resume_params = body.dict(exclude_none=True)
-    # print(updated_resume_params)
+    print(updated_resume_params)
     if updated_resume_params == {}:
         raise HTTPException(
             status_code=422,

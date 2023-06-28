@@ -1,35 +1,19 @@
-import {LoginApiInstance, DefaultApiInstance} from './apiinstanse.js'
+import {DefaultApiInstance} from './apiinstanse.js'
 
 
 
 
 
-export const AuthApi = {
+export const UrlApi = {
 
-    login(email, password) {
-        const url = '/auth/token/login/';
-        const data = {email, password}
-        return LoginApiInstance.post(url, data)
-    },
 
-    logout(){
-        const url = '/auth/token/logout/';
-        return DefaultApiInstance.post(url)
-
-    },
-
-    getOffer(params) {
-        const url = '/offer/all/';
-        return DefaultApiInstance.get(url, { params })
-    },
-
-    postOffer(data) {
+    postResume(data) {
         const url = '/offer/all/';
         return DefaultApiInstance.post(url, data)
     },
 
 
-    getCustomer(){
+    getResume(){
         const url = '/customer/all/';
         return DefaultApiInstance.get(url)
 
