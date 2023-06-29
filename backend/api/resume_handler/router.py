@@ -11,7 +11,7 @@ def read_all_resume(body: GetResume):
     # print(resume_params['requirements']) # Тут приходят требования вида str(просто текст)
     # print(len(resume_params['content'])) # Тут приходит контетн вида [ {id:1, text:'текст резюме1'}, {id:2, text:'текст резюме2'}]
     id_resume = list(map(lambda x: x['id'], resume_params['content'])) # получаю пришедшие id
-    print(id_resume)
+    # print(id_resume)
     range_id = sample(id_resume, len(id_resume)) # сортирую  id иметируя ранжирование
     return range_id
 

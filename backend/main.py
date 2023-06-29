@@ -1,11 +1,10 @@
-from typing import Union
 import uvicorn
 
 
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from api.router import api_router
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.ext.declarative import declarative_base
+
 
 
 app = FastAPI(debug=True)
@@ -13,10 +12,9 @@ app = FastAPI(debug=True)
 app.include_router(api_router)
 
 origins = [
-   
     "http://localhost:5173",
      "http://127.0.0.1:5173",
-     "https://scaner.3s.by/",
+     "https://scanercv.3s.by",
 ]
 
 app.add_middleware(
