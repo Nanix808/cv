@@ -6,22 +6,15 @@ import {DefaultApiInstance} from './apiinstanse.js'
 
 export const UrlApi = {
 
-
-    postResume(data) {
-        const url = '/offer/all/';
-        return DefaultApiInstance.post(url, data)
+    postResume(body) {
+        const url = '/resume';
+        // const body =  body
+        return DefaultApiInstance.post(url,body)
     },
 
-
-    getResume(){
-        const url = '/customer/all/';
-        return DefaultApiInstance.get(url)
-
-    },
+  
 
 
 
 
 }
-
-

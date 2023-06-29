@@ -14,12 +14,18 @@ export default {
       required: false,
       default: false
     },
+    next_icon: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
   },
     emits: ['clicks'],
   
     setup(props, {emit}) {
       const active = toRef(() => props.active)
       const right = toRef(() => props.right)
+      const next_icon = toRef(()=>props.next_icon)
       const click = () =>{
         active.value ? emit("clicks") : ''
       }
@@ -27,7 +33,8 @@ export default {
       return {
         active,
         click, 
-        right
+        right,
+        next_icon
     };
     }
     }
@@ -39,7 +46,7 @@ export default {
 <template>
 <button class="button"
 
-        :class="[right ? 'button_right':'button_left', active ? 'active_button':'']"
+        :class="[right ? 'button_right':'button_left', active ? 'active_button':'', next_icon ? 'nojump': '']"
         @click="click"
 ><span><slot></slot></span></button>
 
@@ -105,6 +112,18 @@ export default {
 .button_right:hover span:after {
   opacity: 1;
   right: 0;
+ } 
+.nojump.button_left:hover span::before, .nojump.button_right:hover span::after {
+  opacity: 0;
 }
+.nojump.button_left:hover span, .nojump.button_right:hover span {
+  padding: 0;
+  transform: scale(1.2);
+
+}
+/* .nojump.button_left:hover span, .nojump.button_right:hover span {
+  padding: 0;
+  
+} */
 
 </style>

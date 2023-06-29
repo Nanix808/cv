@@ -3,14 +3,26 @@ import { createStore } from 'vuex'
 export const store = createStore({
   state: {
     countId: 0,
-    texts: []
+    texts: [],
+    requirements: ''
   },
   getters: {
     lengthTexts (state) {
       return state.texts.length
     },
+    lengthRequirements (state) {
+      return state.requirements.length > 0 ? true: false
+    },
     getAllTexts (state) {
       return state.texts
+    },
+    getRequirements (state) {
+      return state.requirements
+    },
+    getRequestTexts(state){
+
+      return state.texts.map((item) => ({ id: item.id,text: item.text  }));
+
     }
   },
   mutations: {
@@ -27,6 +39,10 @@ export const store = createStore({
     pushText(state, { id, file_path, text}) {
       state.texts.push({id, file_path, text})
     },
+
+    pushRequirements(state,  text) {
+      state.requirements = text
+    },
   
   },
   actions: {
@@ -40,6 +56,10 @@ export const store = createStore({
     },
     del_by_id({ commit }, id){
       commit('delText', { id: id })
+    },
+    addrequirements ({ commit }, text) {
+      commit('pushRequirements', text)
+
     }
   }
 });

@@ -4,7 +4,7 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import AreaUploader from '@/components/Area.vue';
 import TableWithStore from '@/components/Table_with_store.vue';
-import ButtonNextPrev from '@/components/ui/button_next.vue';
+import ButtonNextPrev from '@/components/ui/ButtonNextPrev.vue';
 
 export default {
   components: {
@@ -17,22 +17,10 @@ export default {
 
     const store = useStore()
     const router = useRouter()
-    // const route = useRoute()
-    function pushWithQuery() {
-    
-      // router.push({
-      //   name: 'search',
-  
-      // })
-    }
 
     const next_page = () => {
         router.push({name: 'second'})
     }
-
-   
-
- 
 
     return { 
       lengthLoadingTexts: computed(() => store.getters.lengthTexts ? true : false),

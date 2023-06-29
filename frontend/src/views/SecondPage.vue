@@ -1,5 +1,5 @@
 <script >
-import {ref,computed } from 'vue';
+import {ref,computed, onMounted } from 'vue';
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import ButtonNextPrev from '@/components/ui/ButtonNextPrev.vue';
@@ -13,12 +13,15 @@ export default {
     const comment = ref('')
     const store = useStore()
     const router = useRouter()
-    const route = useRoute()
-  
+
+  onMounted(() => {
+    comment.value = store.getters.getRequirements
+    })
 
     const next_page = () => {
       router.push({name: 'finish'})
-      // pushWithQuery()
+      store.dispatch('addrequirements', comment )
+
     }
     const prev_page = () => {
         router.push({name: 'first'})
