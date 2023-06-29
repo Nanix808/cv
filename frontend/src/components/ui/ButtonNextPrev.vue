@@ -1,10 +1,8 @@
 <script>
-import {toRef} from 'vue'
+import { toRef } from 'vue'
 
 export default {
-
-    
-    props: {
+  props: {
     active: {
       type: Boolean,
       required: false,
@@ -20,36 +18,33 @@ export default {
       default: false
     },
   },
-    emits: ['clicks'],
-  
-    setup(props, {emit}) {
-      const active = toRef(() => props.active)
-      const right = toRef(() => props.right)
-      const next_icon = toRef(()=>props.next_icon)
-      const click = () =>{
-        active.value ? emit("clicks") : ''
-      }
+  emits: ['clicks'],
 
-      return {
-        active,
-        click, 
-        right,
-        next_icon
+  setup(props, { emit }) {
+    const active = toRef(() => props.active)
+    const right = toRef(() => props.right)
+    const next_icon = toRef(() => props.next_icon)
+    const click = () => {
+      active.value ? emit("clicks") : ''
+    }
+
+    return {
+      active,
+      click,
+      right,
+      next_icon
     };
-    }
-    }
-
-
+  }
+}
 
 </script>
 
 <template>
-<button class="button"
-
-        :class="[right ? 'button_right':'button_left', active ? 'active_button':'', next_icon ? 'nojump': '']"
-        @click="click"
-><span><slot></slot></span></button>
-
+  <button class="button"
+    :class="[right ? 'button_right' : 'button_left', active ? 'active_button' : '', next_icon ? 'nojump' : '']"
+    @click="click"><span>
+      <slot></slot>
+    </span></button>
 </template>
 <style scoped>
 .button {
@@ -62,16 +57,15 @@ export default {
   padding: 12px;
   width: 200px;
   transition: all 0.5s;
-  
   margin: 5px;
 }
-.button.active_button{
-    background-color: green;
-    cursor: pointer;
+
+.button.active_button {
+  background-color: green;
+  cursor: pointer;
 }
 
 .button span {
-
   display: inline-block;
   position: relative;
   transition: 0.5s;
@@ -92,9 +86,8 @@ export default {
 
 .button_left:hover span::before {
   opacity: 1;
-  left: 0px; 
+  left: 0px;
 }
-
 
 .button_right.active_button span:after {
   content: '\00bb';
@@ -112,18 +105,19 @@ export default {
 .button_right:hover span:after {
   opacity: 1;
   right: 0;
- } 
-.nojump.button_left:hover span::before, .nojump.button_right:hover span::after {
+}
+
+.nojump.button_left:hover span::before,
+.nojump.button_right:hover span::after {
   opacity: 0;
 }
-.nojump.button_left:hover span, .nojump.button_right:hover span {
-  padding: 0;
-  transform: scale(1.2);
 
+.nojump.button_left:hover span,
+.nojump.button_right:hover span {
+  padding: 0;
 }
-/* .nojump.button_left:hover span, .nojump.button_right:hover span {
-  padding: 0;
-  
-} */
 
-</style>
+.nojump.button_left.active_button:hover span,
+.nojump.button_right.active_button:hover span {
+  transform: scale(1.2);
+}</style>

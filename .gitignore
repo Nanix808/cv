@@ -4,6 +4,7 @@ backend/migrations/versions/*.*
 backend/migrations/Readme
 backend/parser/driver
 frontend/.vscode
+frontend/dist
 frontend/node_modules
 frontend/.eslintrc.cjs
 frontend/package-lock.json

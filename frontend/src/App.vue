@@ -1,9 +1,7 @@
 <script >
 
-
 export default {
  
-
   setup() {
  
     return { 
@@ -14,13 +12,7 @@ export default {
 </script>
 
 <template>
-
   <router-view></router-view>
- 
 </template>
-
 <style scoped>
-
-
-
 </style>
