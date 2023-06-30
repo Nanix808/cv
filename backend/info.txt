@@ -1,8 +1,0 @@
-
-Инициализировать каталог
-alembic init migrations
-
-Создать миграцию
-    alembic revision --autogenerate -m “First commit5”
-Применить миграцию
-    alembic upgrade heads
