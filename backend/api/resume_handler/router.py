@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter
 from .schemas import GetResume
 import pandas as pd
@@ -32,7 +33,9 @@ def read_all_resume(body: GetResume):
     range_id_tf = text_job(data = resumes_df, target = target, how = 'tfidf')
     print(range_id_tf)
 
-    return range_id
+    result_dict = {'range_id': range_id, 'range_id_tf': range_id_tf}
+
+    return json.dumps(result_dict)
 
 
     #print(type(resumes_df))
