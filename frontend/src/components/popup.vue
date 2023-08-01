@@ -12,7 +12,11 @@
         </div>
         <div class="content">
 
-          <vue-pdf-embed :source=" FileOpen" />
+          <vue-pdf-embed :source="FileOpen" 
+        
+      
+       
+          />
        
         </div>
       </div>
@@ -105,7 +109,7 @@ export default {
   cursor: default;
   margin-right: 76px; */
   position: absolute;
-  top: 5%;
+  top: 50%;
   left: 50%;
   width: 90%;
   transform: translate(-50%, -50%);
@@ -123,7 +127,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 10vh;
+  height: 90vh;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
@@ -176,6 +180,11 @@ export default {
 
 .content {
   background-color: white;
+  overflow-y: auto;
+  /* overflow-x: hidden; */
+  /* height: 900px;
+  width: 100%; */
+  position: relative;
 }
 
 .backdrop {
