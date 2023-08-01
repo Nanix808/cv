@@ -5,16 +5,22 @@ import { useRouter, useRoute } from 'vue-router'
 import AreaUploader from '@/components/Area.vue';
 import TableWithStore from '@/components/Table_with_store.vue';
 import ButtonNextPrev from '@/components/ui/ButtonNextPrev.vue';
+import Popup from '@/components/popup.vue';
+import VuePdfEmbed from 'vue-pdf-embed'
+
 
 export default {
   components: {
     AreaUploader,
     TableWithStore,
-    ButtonNextPrev
+    ButtonNextPrev,
+    VuePdfEmbed,
+    Popup
+    
   },
 
   setup() {
-
+    const pdfSource = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf'
     const store = useStore()
     const router = useRouter()
 
@@ -29,11 +35,28 @@ export default {
 
     };
 
+    const ShowPdf = (index) =>{
+      console.log(index)
+    }
+
+    const createFile = () =>{
+      if (store.getters.getAllTexts.length){
+      let src= URL.createObjectURL(store.getters.getAllTexts[0].file_path)
+      return src
+      }
+      return null
+    }
+
     return {
       lengthLoadingTexts: computed(() => store.getters.lengthTexts ? true : false),
       allTexts: computed(() => store.getters.getAllTexts),
+      // file1: computed(() => allTexts[0].file_path.type),
+      
       next_page,
-      del_by_id
+      del_by_id,
+      pdfSource,
+      createFile,
+      ShowPdf
 
 
     };
@@ -48,6 +71,7 @@ export default {
     <TableWithStore
      @del_by_id="del_by_id"
      @clear_all="$store.dispatch('clear')" 
+     @show_pdf="ShowPdf"
      :texts="allTexts"
      :show_del_buttons = true
      ></TableWithStore>
@@ -55,6 +79,19 @@ export default {
       <ButtonNextPrev @clicks="next_page" :active="lengthLoadingTexts" :right=true> Шаг №2
       </ButtonNextPrev>
     </div>
+    <Popup
+
+    :FileOpen = "createFile()"
+    :isOpen="createFile() ? true : false"
+    />
+    <!-- createFile()
+    <embed 
+       :src="createFile()"
+       width="250"
+       height="200"> -->
+
+    <!-- <vue-pdf-embed :source="createFile()" /> -->
+
   </div>
 </template>
 

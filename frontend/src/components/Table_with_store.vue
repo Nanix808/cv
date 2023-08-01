@@ -1,7 +1,7 @@
 <script>
 import { toRef } from 'vue'
 export default {
-  emits: ['clear_all', 'del_by_id'],
+  emits: ['clear_all', 'del_by_id', 'show_pdf'],
   props: {
     texts: {
       type: Array,
@@ -25,11 +25,16 @@ export default {
       emit('clear_all')
     }
 
+    const showPdf = (index) =>{
+      emit('show_pdf', index)
+    }
+
     return {
       texts,
       del_by_id,
       clear_all,
-      show_del_buttons
+      show_del_buttons,
+      showPdf
     };
   }
 }
@@ -53,7 +58,10 @@ export default {
         <tr v-for="(items, index) in texts" :key="index" :data-index="index">
           <td>{{ items.id }}</td>
           <td>{{ items.file_path.name }}</td>
-          <td>{{ items.file_path.type }}</td>
+          <td
+          @click="showPdf(items.id)"
+          
+          >{{ items.file_path.type }}</td>
           <td>{{ items.text.substr(0, 300) }}</td>
           <td
           v-if="show_del_buttons"

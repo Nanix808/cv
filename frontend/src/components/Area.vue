@@ -41,7 +41,10 @@ import {
 import { useStore } from 'vuex'
 import * as PDFJS from "pdfjs-dist";
 import "pdfjs-dist/web/pdf_viewer.css";
-PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.9.179/build/pdf.worker.min.js";
+// PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.js`;
+PDFJS.GlobalWorkerOptions.workerSrc =`https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS.version}/build/pdf.worker.min.js`;
+// PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.9.179/build/pdf.worker.min.js";
+
 
 
 export default {
@@ -106,7 +109,9 @@ export default {
       for(let i=0; i< event.target.files.length; i++){
         loader.value = true
         const file_path = event.target.files[i]
+        // console.log(file_path)
         let text = await filesReader(file_path)
+        // console.log(file_path)
         const fileText = Object.assign({}, {
             file_path : file_path,
             text : text
