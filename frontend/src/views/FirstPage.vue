@@ -81,7 +81,7 @@ export default {
     </div>
     <Popup
 
-    :FileOpen = "createFile()"
+    :FileOpen = "false"
     :isOpen="createFile() ? true : false"
     />
     <!-- createFile()
