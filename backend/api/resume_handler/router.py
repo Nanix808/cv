@@ -2,7 +2,7 @@ import json
 from fastapi import APIRouter
 from .schemas import GetResume
 import pandas as pd
-
+from fastapi.responses import JSONResponse
 #импорт двух новых функций из МЛ
 from ml.text_models import text_job
 from ml.text_preprocessing import text_preprocessing
@@ -33,9 +33,9 @@ def read_all_resume(body: GetResume):
     range_id_tf = text_job(data = resumes_df, target = target, how = 'tfidf')
     print(range_id_tf)
 
-    result_dict = {'range_id': range_id, 'range_id_tf': range_id_tf}
+    result_dict = {'CountVectorizer': range_id, 'TF-IDF': range_id_tf, 'TF-IDF1': range_id_tf}
 
-    return json.dumps(result_dict)
+    return JSONResponse(content=result_dict)
 
 
     #print(type(resumes_df))

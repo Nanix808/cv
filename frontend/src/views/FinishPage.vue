@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import ButtonNextPrev from '@/components/ui/ButtonNextPrev.vue';
 import { UrlApi } from '@/api/index.js';
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import TableWithStore from '@/components/Table_with_store.vue';
 
@@ -17,15 +17,29 @@ export default {
     const data = ref({})
     const router = useRouter()
     const store = useStore()
+    const fromArray = ref({})
+    const algoritm = ref({})
+    const indexButton = ref(0)
 
     const prev_page = async () => {
       router.push({ name: 'second' })
     }
 
     const sort_array = computed(() => {
-      const order = Object.values(data.value);
+      const order = Object.values(fromArray.value)
       return store.getters.getAllTexts.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
-    })
+    });
+
+    watch(data, () => {
+      algoritm.value = Object.keys(data.value)
+      choiseAlgoritm(0)
+    }, { deep: true });
+
+
+    const choiseAlgoritm = (index) => {
+      indexButton.value = index
+      fromArray.value = data.value[Object.keys(data.value)[index]]
+    }
 
 
     const post_reqest = async () => {
@@ -46,10 +60,14 @@ export default {
       prev_page,
       post_reqest,
       sort_array,
+      choiseAlgoritm,
+      algoritm,
+      fromArray,
+      indexButton,
       allLengthTexts: computed(() => store.getters.lengthTexts),
       lengthLoadingTexts: computed(() => store.getters.lengthTexts ? store.getters.getRequestTexts ? true : false : false),
       getRequirements: computed(() => store.getters.getRequirements),
-    
+
     };
   },
 };
@@ -60,12 +78,21 @@ export default {
     <h3>Отправьте запрос на сервер</h3>
     <div class="info">
       <p>Загруженно <span>{{ allLengthTexts }}</span> резюме</p>
-      <p 
-      v-if="getRequirements.length>0"
-      class="requirement">Посмотреть выбранные требования <div class="tooltip">.
-        <span class="tooltiptext">{{ getRequirements }}</span></div> </p>
+      <p v-if="getRequirements.length > 0" class="requirement">Посмотреть выбранные требования
+      <div class="tooltip">.
+        <span class="tooltiptext">{{ getRequirements }}</span>
+      </div>
+      </p>
     </div>
-    <TableWithStore v-if="data.length" @clear_all="$store.dispatch('clear')" :texts="sort_array"></TableWithStore>
+    <div class="algoritm" v-if="algoritm">
+      <button v-for="(items, index) in algoritm" :key="index" :data-index="index"
+        :class="indexButton == index ? 'activebuttonalgoritm' : ''" class="buttonalgoritm" @click="choiseAlgoritm(index)">
+        {{ items }}
+        <!-- <span></span> -->
+      </button>
+    </div>
+    <TableWithStore v-if="Object.keys(data).length" @clear_all="$store.dispatch('clear')" :texts="sort_array">
+    </TableWithStore>
     <div class="button_container">
       <ButtonNextPrev @clicks="prev_page" :active=true :right=false>Шаг №2</ButtonNextPrev>
       <ButtonNextPrev @clicks="post_reqest" :active=lengthLoadingTexts :right=true :next_icon=true>Отправить
@@ -82,39 +109,112 @@ h3 {
   align-items: center;
   justify-content: center;
 }
-.requirement{
+
+.requirement {
   display: flex;
   align-items: center;
 
 
 }
+
 .tooltip {
-    margin-left: 5px;
-    position: relative;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-size: cover;
-    background: url(../src/assets/images/question.svg);
-  
-   
+  margin-left: 5px;
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background: url(../src/assets/images/question.svg);
+
+
 }
+
 .tooltip .tooltiptext {
-    visibility: hidden;
-    max-width: 60vw;
-    width: max-content;
-    background-color: #fbfafa;
-    color: black;
-    text-align: center;
-    border: 4px dotted #eee;
-    border-radius: 15px;
-    padding: 10px;
-    top: 20px;
-    left: 5px;
-    position: absolute;
-    z-index: 15;
+  visibility: hidden;
+  max-width: 60vw;
+  width: max-content;
+  background-color: #fbfafa;
+  color: black;
+  text-align: center;
+  border: 4px dotted #eee;
+  border-radius: 15px;
+  padding: 10px;
+  top: 20px;
+  left: 5px;
+  position: absolute;
+  z-index: 15;
 }
+
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
+
+
+.algoritm {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.buttonalgoritm {
+  flex: 1 0 0px;
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: green;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(26, 147, 76, 0.15) 0 4px 9px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  /* display: inline-block; */
+
+
+  margin: 0 15px;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+
+.buttonalgoritm:active,
+.activebuttonalgoritm {
+  transform: translateY(5px);
+  transition-duration: .35s;
+  background-color: rgb(23, 142, 64);
+}
+/* .buttonalgoritm:hover{ */
+  /* transform: scale(1.01); */
+/* } */
+
+/* .activebuttonalgoritm span {
+  display: block;
+  position: absolute;
+
+  z-index: 10;
+  background-color: white;
+
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background: url(../src/assets/images/bottom.svg);
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition-duration: .35s;
+} */
 </style>

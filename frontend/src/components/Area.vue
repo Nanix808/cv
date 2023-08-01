@@ -41,7 +41,7 @@ import {
 import { useStore } from 'vuex'
 import * as PDFJS from "pdfjs-dist";
 import "pdfjs-dist/web/pdf_viewer.css";
-PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.8.162/build/pdf.worker.min.js";
+PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.9.179/build/pdf.worker.min.js";
 
 
 export default {
