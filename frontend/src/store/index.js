@@ -22,8 +22,10 @@ export const store = createStore({
     getRequestTexts(state){
 
       return state.texts.map((item) => ({ id: item.id,text: item.text  }));
-
-    }
+    },
+  //   getById: (state) => (id) => { // get the parameter
+  //     return state.texts.find(item => item.id === id);
+  // }
   },
   mutations: {
     increment(state) {

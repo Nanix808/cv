@@ -33,7 +33,7 @@ def read_all_resume(body: GetResume):
     range_id_tf = text_job(data = resumes_df, target = target, how = 'tfidf')
     print(range_id_tf)
 
-    result_dict = {'CountVectorizer': range_id, 'TF-IDF': range_id_tf, 'TF-IDF1': range_id_tf}
+    result_dict = {'TF-IDF': range_id_tf, 'CountVectorizer': range_id, 'TF-IDF1': range_id_tf}
 
     return JSONResponse(content=result_dict)
 

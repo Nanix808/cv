@@ -1,6 +1,11 @@
 <script>
-import { toRef } from 'vue'
+import { ref, toRef } from 'vue'
+import Popup from '@/components/popup.vue';
+import { useStore } from 'vuex'
 export default {
+  components: {
+    Popup,
+  },
   emits: ['clear_all', 'del_by_id', 'show_pdf'],
   props: {
     texts: {
@@ -17,6 +22,10 @@ export default {
   setup(props, { emit }) {
     const texts = toRef(() => props.texts)
     const show_del_buttons = toRef(() => props.show_del_buttons)
+    const PopupOpen = ref(false)
+    const store = useStore()
+    const FilePath = ref(null)
+    const FileName = ref(null)
     const del_by_id = (id) => {
       emit('del_by_id', id)
     };
@@ -25,8 +34,13 @@ export default {
       emit('clear_all')
     }
 
-    const showPdf = (index) =>{
-      emit('show_pdf', index)
+    const showPdf = (file) =>{
+        if (file.id) {
+        PopupOpen.value = true
+        FileName.value = file.file_path.name
+        // console.log(URL.createObjectURL(store.getters.getById(index).file_path))
+        FilePath.value =  URL.createObjectURL(file.file_path)
+      }
     }
 
     return {
@@ -34,7 +48,10 @@ export default {
       del_by_id,
       clear_all,
       show_del_buttons,
-      showPdf
+      showPdf,
+      PopupOpen,
+      FilePath,
+      FileName
     };
   }
 }
@@ -58,10 +75,16 @@ export default {
         <tr v-for="(items, index) in texts" :key="index" :data-index="index">
           <td>{{ items.id }}</td>
           <td>{{ items.file_path.name }}</td>
-          <td
-          @click="showPdf(items.id)"
+          <td 
+         
           
-          >{{ items.file_path.type }}</td>
+          >  
+          <div class="td_pdf"
+          @click="showPdf(items)"
+          >
+          <div :class="items.file_path.type == 'application/pdf' ? 'pdf': ''"></div>
+        </div>
+        </td>
           <td>{{ items.text.substr(0, 300) }}</td>
           <td
           v-if="show_del_buttons"
@@ -80,6 +103,15 @@ export default {
         </tr>
       </tfoot>
     </table>
+
+    <Popup
+    @close="PopupOpen=false"
+    :isOpen="PopupOpen" 
+    :FileOpen="FilePath"
+    :FileName="FileName"
+    
+    />
+
   </div>
 </template>        
 
@@ -181,12 +213,32 @@ export default {
   width: 14px;
 }
 
+
+
 .right_menu::-webkit-scrollbar-thumb {
   border: 4px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
   border-radius: 9999px;
   background-color: #AAAAAA;
 }
+
+
+.td_pdf{
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+
+}
+
+.pdf{
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background: url(../src/assets/images/pdf.svg);
+}
+
 </style>
 
 

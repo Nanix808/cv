@@ -1,13 +1,11 @@
 <script >
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import AreaUploader from '@/components/Area.vue';
 import TableWithStore from '@/components/Table_with_store.vue';
 import ButtonNextPrev from '@/components/ui/ButtonNextPrev.vue';
-import Popup from '@/components/popup.vue';
 import VuePdfEmbed from 'vue-pdf-embed'
-
 
 export default {
   components: {
@@ -15,8 +13,6 @@ export default {
     TableWithStore,
     ButtonNextPrev,
     VuePdfEmbed,
-    Popup
-    
   },
 
   setup() {
@@ -29,36 +25,24 @@ export default {
     }
 
     const del_by_id = (id) => {
-
-
       store.dispatch('del_by_id', id)
-
     };
 
-    const ShowPdf = (index) =>{
-      console.log(index)
-    }
+    const closePopup = () => {
 
-    const createFile = () =>{
-      if (store.getters.getAllTexts.length){
-      let src= URL.createObjectURL(store.getters.getAllTexts[0].file_path)
-      return src
-      }
-      return null
-    }
+      console.log('close')
+
+      PopupOpen.value = false
+
+    };
 
     return {
       lengthLoadingTexts: computed(() => store.getters.lengthTexts ? true : false),
       allTexts: computed(() => store.getters.getAllTexts),
-      // file1: computed(() => allTexts[0].file_path.type),
-      
+      file1: computed(() => allTexts[0].file_path.type),
       next_page,
       del_by_id,
       pdfSource,
-      createFile,
-      ShowPdf
-
-
     };
   },
 };
@@ -68,30 +52,12 @@ export default {
   <div>
     <AreaUploader>
     </AreaUploader>
-    <TableWithStore
-     @del_by_id="del_by_id"
-     @clear_all="$store.dispatch('clear')" 
-     @show_pdf="ShowPdf"
-     :texts="allTexts"
-     :show_del_buttons = true
-     ></TableWithStore>
+    <TableWithStore @del_by_id="del_by_id" @clear_all="$store.dispatch('clear')"  :texts="allTexts"
+      :show_del_buttons=true></TableWithStore>
     <div class="button_container">
       <ButtonNextPrev @clicks="next_page" :active="lengthLoadingTexts" :right=true> Шаг №2
       </ButtonNextPrev>
     </div>
-    <Popup
-
-    :FileOpen = "false"
-    :isOpen="createFile() ? true : false"
-    />
-    <!-- createFile()
-    <embed 
-       :src="createFile()"
-       width="250"
-       height="200"> -->
-
-    <!-- <vue-pdf-embed :source="createFile()" /> -->
-
   </div>
 </template>
 
@@ -101,5 +67,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* width: 100px; */
 }
 </style>
