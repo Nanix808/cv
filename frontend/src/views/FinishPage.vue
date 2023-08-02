@@ -27,7 +27,8 @@ export default {
 
     const sort_array = computed(() => {
       const order = Object.values(fromArray.value)
-      return store.getters.getAllTexts.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+      let sortarray = store.getters.getAllTexts
+      return sortarray.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
     });
 
     watch(data, () => {
@@ -37,6 +38,8 @@ export default {
 
 
     const choiseAlgoritm = (index) => {
+    
+
       indexButton.value = index
       fromArray.value = data.value[Object.keys(data.value)[index]]
     }
@@ -44,9 +47,12 @@ export default {
 
     const post_reqest = async () => {
       const body = {
-        content: store.getters.getRequestTexts,
+        content: store.getters.getRequestTexts.sort(( a,b ) => a.id - b.id),
         requirements: store.getters.getRequirements
       }
+    
+    
+
       return await UrlApi.postResume(body).then((res) => {
         data.value = res.data
         return res
