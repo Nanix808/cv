@@ -33,19 +33,10 @@ def read_all_resume(body: GetResume):
     range_id_tf = text_job(data = resumes_df, target = target, how = 'tfidf')
     print(range_id_tf)
 
-    result_dict = {'TF-IDF': range_id_tf, 'CountVectorizer': range_id, 'TF-IDF1': range_id_tf}
+    range_cosine = text_job(data = resumes_df, target = target, how = 'cosine_similarity')
+
+    result_dict = {'TF-IDF': range_id_tf, 'CountVectorizer': range_id, 'CosineSimilarity': range_cosine}
 
     return JSONResponse(content=result_dict)
 
-
-    #print(type(resumes_df))
-    #print(resumes_df, target)
-    #нужно распаковать все резюме в датафрейм
-    #print('Требования ', resume_params['requirements']) # Тут приходят требования вида str(просто текст)
-    #print('Поступило резюме - ', len(resume_params['content'])) # Тут приходит контетн вида [ {id:1, text:'текст резюме1'}, {id:2, text:'текст резюме2'}]
-    #id_resume = list(map(lambda x: x['id'], resume_params['content'])) # получаю пришедшие id
-    #print('первичный порядок', id_resume)
-    #range_id = sample(id_resume, len(id_resume)) # сортирую  id иметируя ранжирование
-    #print('сортировка', range_id)
-    #return range_id
 

@@ -2,9 +2,10 @@ from typing import Literal, List
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, TfidfTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 #переменная для выбора способа работы с резюме
-HOW = Literal["cv", "tfidf"]
+HOW = Literal["cv", "tfidf", "cosine_similarity"]
 
 def text_job (data: pd.DataFrame, target: str, how: HOW) -> List:
     
@@ -31,13 +32,21 @@ def text_job (data: pd.DataFrame, target: str, how: HOW) -> List:
     #перемножаем получившиеся матрицу с вектором требований
     find_tfidf = tfidf_matrix @ vector
 
+    #cosine similarity
+    cos_matrix = tfidf_matrix.toarray()
+    cos_vector = cv.transform([target]).toarray()
+    res_matrix = np.append(cos_matrix, cos_vector, axis=0)
+    res=cosine_similarity(res_matrix)
+
     #ставим баллы каждому резюме
     data['score_cv'], data['score_tfidf'] = find_cv.A[:,0], find_tfidf.A[:,0]
 
     if how == "cv":
         return list(data.sort_values('score_cv', ascending=False)['id'])
-    if how == "tfidf":
+    elif how == "tfidf":
         return list(data.sort_values('score_tfidf', ascending=False)['id'])
+    elif how == "cosine_similarity":
+        return res[-1,:].argsort().tolist()
 
 
 
