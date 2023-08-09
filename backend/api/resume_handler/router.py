@@ -35,7 +35,7 @@ def read_all_resume(body: GetResume):
 
     range_cosine = text_job(data = resumes_df, target = target, how = 'cosine_similarity')
 
-    result_dict = {'TF-IDF': range_id_tf, 'CountVectorizer': range_id, 'CosineSimilarity': range_cosine}
+    result_dict = {'TF-IDF': {"range": range_id_tf, "prc" : prc}, 'CountVectorizer': range_id, 'CosineSimilarity': range_cosine}
 
     return JSONResponse(content=result_dict)
 
