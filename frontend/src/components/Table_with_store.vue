@@ -64,11 +64,14 @@ export default {
         <tr>
           <th class="box-1">№</th>
           <th class="box-2">Название файла</th>
-          <th class="box-3">Тип файла</th>
-          <th class="box-4">Краткий текст</th>
+          <th class="box-3">Посмотреть резюме</th>
+          <th class="box-4"
+          v-if="!show_del_buttons"
+          >Точность совпадения</th>
+          <th class="box-5">Краткий текст</th>
           <th 
           v-if="show_del_buttons"
-          class="box-5">Удалить</th>
+          class="box-6">Удалить</th>
         </tr>
       </thead>
       <tbody>
@@ -85,6 +88,9 @@ export default {
           <div :class="items.file_path.type == 'application/pdf' ? 'pdf': ''"></div>
         </div>
         </td>
+          <td
+          v-if="!show_del_buttons"
+          >{{ items.accuracy }} %</td>
           <td>{{ items.text.substr(0, 300) }}</td>
           <td
           v-if="show_del_buttons"
@@ -185,16 +191,19 @@ export default {
   background: #F7F7F7;
 }
 
-.box-4 {
+.box-5 {
   max-width: 100%;
   width: 100%;
 }
 
 .box-1,
-.box-3,
-.box-5 {
+.box-6 {
   max-width: 65px;
   width: 65px;
+}
+.box-3, .box-4 {
+  max-width: 85px;
+  width: 85px;
 }
 
 .box-2 {

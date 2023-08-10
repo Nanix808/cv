@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 #импорт двух новых функций из МЛ
 from ml.text_models import text_job
 from ml.text_preprocessing import text_preprocessing
-
+import random
 
 resume_handler = APIRouter()
 
@@ -35,7 +35,17 @@ def read_all_resume(body: GetResume):
 
     range_cosine = text_job(data = resumes_df, target = target, how = 'cosine_similarity')
 
-    result_dict = {'TF-IDF': {"range": range_id_tf, "prc" : prc}, 'CountVectorizer': range_id, 'CosineSimilarity': range_cosine}
+
+    # Данные должны быть такого вида как format
+
+    # format =    { 'TF-IDF'             :   {"range"  : [2, 4, 5, 1, 3], "accuracy"   : [58.85, 76.92, 90.95, 85.04, 78.46]},
+    #                 'CountVectorizer'    :   {"range": [1, 2, 4, 5, 3], "accuracy"    : [46.42, 39.83, 58.32, 70.86, 8.53]} ,
+    #             }
+
+    result_dict = { 'TF-IDF'             :   {"range": range_id_tf, "accuracy" : [round(random.uniform(1, 100),2) for _ in range(len(range_id_tf))]},
+                    'CountVectorizer'    :   {"range": range_id, "accuracy" : [round(random.uniform(1, 100),2) for _ in range(len(range_id))]} ,
+                    # 'CosineSimilarity'   :   {"range": range_cosine, "accuracy" : list(range(len(range_cosine)))}
+                  }
 
     return JSONResponse(content=result_dict)
 

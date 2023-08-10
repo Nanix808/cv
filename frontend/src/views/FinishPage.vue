@@ -20,6 +20,7 @@ export default {
     const fromArray = ref({})
     const algoritm = ref({})
     const indexButton = ref(0)
+    const accuracy = ref([])
 
     const prev_page = async () => {
       router.push({ name: 'second' })
@@ -28,7 +29,9 @@ export default {
     const sort_array = computed(() => {
       const order = Object.values(fromArray.value)
       let sortarray = store.getters.getAllTexts
-      return sortarray.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+      sortarray = sortarray.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+      sortarray.forEach((element, index) => element.accuracy= accuracy.value[index] )
+      return sortarray
     });
 
     watch(data, () => {
@@ -38,10 +41,9 @@ export default {
 
 
     const choiseAlgoritm = (index) => {
-    
-
       indexButton.value = index
-      fromArray.value = data.value[Object.keys(data.value)[index]]
+      fromArray.value = data.value[Object.keys(data.value)[index]].range
+      accuracy.value = data.value[Object.keys(data.value)[index]].accuracy
     }
 
 
@@ -55,6 +57,7 @@ export default {
 
       return await UrlApi.postResume(body).then((res) => {
         data.value = res.data
+        console.log(res.data)
         return res
       }).catch((error) => {
         console.log("Ошибка загрузки данных на сервер", error)
