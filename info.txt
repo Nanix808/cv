@@ -30,8 +30,6 @@
 
 
 
-
-RUN DOCKERFILE
-docker build -t gp_cv_frontend .
-docker run -it -p 8080:80 --rm --name frontend  gp_cv_frontend
+docker-compose build --no-cache
+docker-compose up --force-recreate
 

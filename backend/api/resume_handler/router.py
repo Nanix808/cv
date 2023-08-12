@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 #импорт двух новых функций из МЛ
 from ml.text_models import text_job
 from ml.text_preprocessing import text_preprocessing
-# from ml.text_preprocessing import PrepTransformer
+from ml.text_preprocessing import PrepTransformer
 import random
 
 resume_handler = APIRouter()
@@ -23,11 +23,11 @@ def read_all_resume(body: GetResume):
     target = resume_params['requirements']
     
     #нормализация текста - пока пустая
-    resumes_df['text'] = resumes_df['text'].apply(text_preprocessing)
-    target = text_preprocessing(target)
-    # PrepTransform = PrepTransformer()
-    # resumes_df['text'] = resumes_df['text'].apply(PrepTransform.transform)
-    # target = PrepTransform.transform(target)
+    # resumes_df['text'] = resumes_df['text'].apply(text_preprocessing)
+    # target = text_preprocessing(target)
+    PrepTransform = PrepTransformer()
+    resumes_df['text'] = resumes_df['text'].apply(PrepTransform.transform)
+    target = PrepTransform.transform(target)
 
     #запускаем модель по логике cv
     range_id = text_job(data = resumes_df, target = target, how = 'cv')
@@ -52,3 +52,9 @@ def read_all_resume(body: GetResume):
                   }
 
     return JSONResponse(content=result_dict)
+    # return JSONResponse(
+    #     { 'TF-IDF'             :   {"range"  : [2, 4, 5, 1, 3], "accuracy"   : [58.85, 76.92, 90.95, 85.04, 78.46]},
+    #                 'CountVectorizer'    :   {"range": [1, 2, 4, 5, 3], "accuracy"    : [46.42, 39.83, 58.32, 70.86, 8.53]} ,
+    #             }
+
+    # ) 
