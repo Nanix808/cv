@@ -1,0 +1,18 @@
+version: '1.0'
+
+services:
+
+  # backend-gp-cv:
+  #   build: backend/.
+  #   container_name: gp_cv_backend
+  #   restart: unless-stopped
+
+  frontend-gp-cv:
+    build: frontend/.
+    container_name: gp_cv_frontend
+    ports:
+      - '8080:80'
+    restart: unless-stopped
+    # environment:
+    #   - 'CHATBOT_HOST=chatbot'
+    #   - 'CHATBOT_PORT=8666'
