@@ -17,7 +17,15 @@ origins = [
      "http://127.0.0.1:8081",
      "http://localhost:8081",
      "http://127.0.0.1:8000",
+
      "http://localhost:8000",
+
+     "http://localhost:80",
+     "http://0.0.0.0:80",
+
+     "http://localhost:8080",
+     "http://0.0.0.0:8080",
+
      "https://scanercv.3s.by",
 ]
 
@@ -31,4 +39,4 @@ app.add_middleware(
 
 if __name__ =="__main__":
     # uvicorn.run(app="main:app", reload=True, port=8080, host="0.0.0.0")
-    uvicorn.run(app="main:app", host='127.0.0.1',  port=8000, reload=True)
+    uvicorn.run(app="main:app", host='0.0.0.0',  port=8000, reload=True)

@@ -2,10 +2,12 @@ version: '1.0'
 
 services:
 
-  # backend-gp-cv:
-  #   build: backend/.
-  #   container_name: gp_cv_backend
-  #   restart: unless-stopped
+  backend-gp-cv:
+    build: backend/.
+    container_name: gp_cv_backend
+    ports:
+      - '8000:8000'
+    restart: unless-stopped
 
   frontend-gp-cv:
     build: frontend/.
