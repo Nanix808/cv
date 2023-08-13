@@ -8,6 +8,10 @@ services:
     ports:
       - '8000:8000'
     restart: unless-stopped
+    networks:
+      - mycustomnetwork2
+        
+
 
   frontend-gp-cv:
     build: frontend/.
@@ -15,6 +19,15 @@ services:
     ports:
       - '8080:80'
     restart: unless-stopped
+    networks:
+      - mycustomnetwork2
+       
     # environment:
     #   - 'CHATBOT_HOST=chatbot'
     #   - 'CHATBOT_PORT=8666'
+
+
+networks:
+  mycustomnetwork2:
+    driver: bridge
+    
