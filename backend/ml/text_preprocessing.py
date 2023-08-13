@@ -7,7 +7,7 @@ def text_preprocessing(text: str) -> str:
 
 from nltk.stem import SnowballStemmer
 import spacy
-from stop_words import stop_words
+from .stop_words import stop_words
 
 
 class PrepTransformer():
