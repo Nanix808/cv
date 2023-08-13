@@ -2,72 +2,53 @@ def text_preprocessing(text: str) -> str:
     return text
 
 # Необходима библиотека nltk 3.8.1
-# Необходима библиотека pymorphy2  0.9.1
-# Необходима библиотека pymorphy2-dicts-ru  2.4.417127.4579844
+# Предварительно необходимо скачать такую модель
+# через cmd такая строка: python -m spacy download ru_core_news_md
 
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk import download as nltk_download
-from nltk.stem.snowball import SnowballStemmer
-from string import punctuation
-import pymorphy2
+from nltk.stem import SnowballStemmer
+import spacy
+from stop_words import stop_words
 
 
 class PrepTransformer():
 
-    def __init__(self, how="stem") -> None:
+    def __init__(self, how="lemma") -> None:
         """Параметр how определяет выбор способа подготовки токенов:
-           - 'lemma' -> используется лемматизация
-           - 'stem' -> используется стемминг
-           - None -> не применяется ни один из способов"""
+        - 'lemma' -> используется лемматизация
+        - 'stem' -> используется стемминг
+        - None -> не применяется ни один из способов"""
         self.how = how
-        
-        #Необходимо для использования word_tokenize для выделения из текста токенов
-        nltk_download('punkt')
-
-     
-        #Исключаем стоп-слова, знаки препинания, иные знаки
-        nltk_download('stopwords') 
-        self.russian_stopwords = stopwords.words("russian") 
-        self.punkt_list = [punctuation[n] for n in range(len(punctuation))] 
-        self.punkt_list.extend(['...', '—', '``', "''", '“', '”', "«", "»"]) 
-        self.russian_stopwords.extend(self.punkt_list) 
-        self.stop_words = set(self.russian_stopwords) 
-        
-
-        #Делаем лемматизацию
-        # self.morph = pymorphy2.MorphAnalyzer() 
-        
-
-        #Делаем стемминг
-        self.stemmer = SnowballStemmer("russian") 
-        
-
+        #Загружаем модель из библиотеки spacy для токенизации и лемматизации
+        self.nlp = spacy.load('ru_core_news_md')
+        self.stop_words = stop_words
     
-    def transform(self, text):
+        #Делаем трансформер для стемминга
+        self.SBstemmer = SnowballStemmer("russian")
         
-        #При помощи библиотеки nltk делаем токенизацию (отдельные знаки препинания становятся отдельными токенами)
-        self.tokens = word_tokenize(text, language="russian")
 
-        #Приводим весь текст к нижнему регистру
-        self.tokens = [token.lower() for token in self.tokens]
-
-        #Исключаем стоп-слова, знаки препинания, иные знаки
-        self.filtered_tokens = [token for token in self.tokens if token not in self.stop_words]
-
-        #Делаем лемматизацию
-        # self.lemmas = [self.morph.parse(token)[0].normal_form for token in self.filtered_tokens]
-
-        #Делаем стемминг
-        self.stems = [self.stemmer.stem(token) for token in self.filtered_tokens]
-
-        #Возвращаем токены в строку
+    def transform(self, text: str)-> str:
+        #Создаем nlp-transfprmer
+        self.doc = self.nlp(text)
+    
+        #Используем метод лемматизации (токенизация, приведение к ниж. регистру и лематизация происходит в рамках одной модели)
+        # и делаем проверку на стоп-слова
         if self.how == 'lemma':
-            return ' '.join(self.lemmas)
-        
-        elif self.how == 'stem':
-            return ' '.join(self.stems)
-        
-        elif self.how == None:
+            self.tokens = [w.lemma_ for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
+            self.filtered_tokens = [token for token in self.tokens if token not in self.stop_words]
             return ' '.join(self.filtered_tokens)
-        
+    
+        #Если выбрали не лемматизацию, то делаем токенизацию, приведение к нижнему регистру, проверку на стоп-слова
+        else:
+            self.tokens = [w.text for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
+            self.tokens_low = [token.lower() for token in self.tokens]
+            self.filtered_tokens = [token for token in self.tokens_low if token not in self.stop_words]
+    
+            #Делаем стемминг каждого токена
+            if self.how == 'stem':
+                self.SBstems = [self.SBstemmer.stem(token) for token in self.filtered_tokens]
+                return ' '.join(self.SBstems)
+    
+            #Возвращаем токены без изменений
+            else:
+                return ' '.join(self.filtered_tokens)
+            
