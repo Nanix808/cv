@@ -31,13 +31,14 @@ def read_all_resume(body: GetResume):
 
     #запускаем модель по логике cv
     range_id = text_job(data = resumes_df, target = target, how = 'cv')
-    print(range_id)
+
 
     #запускаем модель по логике tfidf - это дает только печать индексов в терминале, не отображается на сайте
     range_id_tf = text_job(data = resumes_df, target = target, how = 'tfidf')
-    print(range_id_tf)
+
 
     range_cosine = text_job(data = resumes_df, target = target, how = 'cosine_similarity')
+
 
 
     # Данные должны быть такого вида как format
@@ -46,9 +47,9 @@ def read_all_resume(body: GetResume):
     #                 'CountVectorizer'    :   {"range": [1, 2, 4, 5, 3], "accuracy"    : [46.42, 39.83, 58.32, 70.86, 8.53]} ,
     #             }
 
-    result_dict = { 'TF-IDF'             :   {"range": range_id_tf, "accuracy" : [round(random.uniform(1, 100),2) for _ in range(len(range_id_tf))]},
-                    'CountVectorizer'    :   {"range": range_id, "accuracy" : [round(random.uniform(1, 100),2) for _ in range(len(range_id))]} ,
-                    # 'CosineSimilarity'   :   {"range": range_cosine, "accuracy" : list(range(len(range_cosine)))}
+    result_dict = { 'Только важное'             :   {"range": range_id_tf[0], "accuracy" : range_id_tf[1]},#[round(random.uniform(1, 100),2) for _ in range(len(range_id_tf))]},
+                    'Слово в слово'    :   {"range": range_id[0], "accuracy" : range_id[1]},# [round(random.uniform(1, 100),2) for _ in range(len(range_id))]} ,
+                    'Альтернативный взгляд'   :   {"range": range_cosine[0], "accuracy" : range_cosine[1]}
                   }
 
     return JSONResponse(content=result_dict)

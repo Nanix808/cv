@@ -67,7 +67,7 @@ export default {
           <th class="box-3">Посмотреть резюме</th>
           <th class="box-4"
           v-if="!show_del_buttons"
-          >Точность совпадения</th>
+          >Рейтинг соискателей</th>
           <th class="box-5">Краткий текст</th>
           <th 
           v-if="show_del_buttons"
