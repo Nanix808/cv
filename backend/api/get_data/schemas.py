@@ -66,17 +66,12 @@ class ShowResume(TunedModel):
     courses: Optional[str]
     computer_skills: Optional[str]
 
-    # @validator('content')
-    # def name_must_contain_space(cls, v):
-    #     return v[:100]
-
 
 class CreateShowResume(TunedModel):
     id: int
     url: str
     source: str
     content: str
-    # created_on: Optional[datetime]
     available: bool
     content_limit: Optional[str]
     content_gpt: Optional[str]

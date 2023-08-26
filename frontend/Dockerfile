@@ -3,9 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-# RUN npm run build
+RUN npm run build
 
-# этап production (production-stage)
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY --from=build-stage /app/src/assets /usr/share/nginx/html/src/assets

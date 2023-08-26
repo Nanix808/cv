@@ -35,8 +35,7 @@
 import {
   computed,
   ref,
-  // PropType,
-  toRefs,
+
 } from 'vue';
 import { useStore } from 'vuex'
 import * as PDFJS from "pdfjs-dist";
@@ -46,28 +45,18 @@ PDFJS.GlobalWorkerOptions.workerSrc =`https://cdn.jsdelivr.net/npm/pdfjs-dist@${
 // PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.9.179/build/pdf.worker.min.js";
 
 
-
 export default {
-  
   components: {
   
   },
-  props: {
-    // modelValue: {
-    //   type: Array,
-    //   required: false,
-    // },
-  },
-
   emits: ['update:modelValue'],
 
-  setup(props, { emit }) {
-    // const { modelValue } = toRefs(props);
+  setup() {
+  
     const store = useStore()
     const input = ref(null);
     const isDragStarted = ref(false);
     const loader = ref(false);
-
 
    const extractText = async (path) => {
         let pdf = await PDFJS.getDocument(path).promise
@@ -98,20 +87,14 @@ export default {
     });
   }
 
-  
+
 
     const uploadFile = async (event) => {
-      
-      // if (event.target.files) {
-      //   emit('update:modelValue', [...modelValue.value, ...Array.from(event.target.files)]);
-      // }
       
       for(let i=0; i< event.target.files.length; i++){
         loader.value = true
         const file_path = event.target.files[i]
-        // console.log(file_path)
         let text = await filesReader(file_path)
-        // console.log(file_path)
         const fileText = Object.assign({}, {
             file_path : file_path,
             text : text
@@ -129,13 +112,6 @@ export default {
       isDragStarted.value = false;
     };
 
-    // const removefile = (index: number) => {
-    //   emit('update:modelValue', modelValue.value.filter((p, i) => i !== index));
-    // };
-
-    // const getSrc = (file: File) => URL.createObjectURL(file);
-
-    // const needToUpload = computed(() => modelValue.value.length);
 
     const uploadText = computed(() => {
   

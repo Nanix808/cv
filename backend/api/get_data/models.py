@@ -1,10 +1,8 @@
-from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text, JSON, Text
-from sqlalchemy.dialects.mysql import INTEGER
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text,Text
 from api.database import Base
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import Mapped
 from typing import Optional
-import enum
 import sqlalchemy
 
 

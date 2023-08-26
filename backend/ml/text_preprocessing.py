@@ -1,10 +1,6 @@
 def text_preprocessing(text: str) -> str:    
     return text
 
-# Необходима библиотека nltk 3.8.1
-# Предварительно необходимо скачать такую модель
-# через cmd такая строка: python -m spacy download ru_core_news_md
-
 from nltk.stem import SnowballStemmer
 import spacy
 from .stop_words import stop_words

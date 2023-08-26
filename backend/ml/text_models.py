@@ -46,7 +46,7 @@ def text_job (data: pd.DataFrame, target: str, how: HOW) -> List:
     scaler2 = MinMaxScaler()
     scaler3 = MinMaxScaler()
 
-#list(data.sort_values('score_cv', ascending=False)['score_cv'])
+
     cv_res = data.sort_values('score_cv', ascending=False)['score_cv'].to_numpy()
 
     cv_res= scaler1.fit_transform(cv_res.reshape(-1,1)).reshape(1,-1).round(2)
@@ -59,11 +59,6 @@ def text_job (data: pd.DataFrame, target: str, how: HOW) -> List:
 
     cv_cosine = np.sort(res[-1,:-1])[::-1]
     cv_cosine = scaler3.fit_transform(cv_cosine.reshape(-1,1)).reshape(1,-1).round(2)
-
-
- 
-
-
 
 
     if how == "cv":

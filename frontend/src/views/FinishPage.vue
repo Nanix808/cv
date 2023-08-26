@@ -134,8 +134,6 @@ h3 {
   height: 20px;
   background-size: cover;
   background: url(../src/assets/images/question.svg);
-
-
 }
 
 .tooltip .tooltiptext {
@@ -177,9 +175,6 @@ h3 {
   color: #fff;
   cursor: pointer;
   position: relative;
-  /* display: inline-block; */
-
-
   margin: 0 15px;
   font-weight: 600;
   letter-spacing: normal;
@@ -198,32 +193,11 @@ h3 {
   vertical-align: top;
   white-space: nowrap;
 }
-
-
 .buttonalgoritm:active,
 .activebuttonalgoritm {
   transform: translateY(5px);
   transition-duration: .35s;
   background-color: rgb(23, 142, 64);
 }
-/* .buttonalgoritm:hover{ */
-  /* transform: scale(1.01); */
-/* } */
 
-/* .activebuttonalgoritm span {
-  display: block;
-  position: absolute;
-
-  z-index: 10;
-  background-color: white;
-
-  width: 30px;
-  height: 30px;
-  background-size: cover;
-  background: url(../src/assets/images/bottom.svg);
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition-duration: .35s;
-} */
 </style>

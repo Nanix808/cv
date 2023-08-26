@@ -38,7 +38,6 @@ export default {
         if (file.id) {
         PopupOpen.value = true
         FileName.value = file.file_path.name
-        // console.log(URL.createObjectURL(store.getters.getById(index).file_path))
         FilePath.value =  URL.createObjectURL(file.file_path)
       }
     }

@@ -2,7 +2,7 @@ aiomysql==0.1.1
 alembic==1.11.1
 anyio==3.6.2
 # async-generator==1.10
-# asyncmy==0.2.7
+asyncmy
 attrs==23.1.0
 beautifulsoup4==4.12.2
 certifi==2022.12.7
