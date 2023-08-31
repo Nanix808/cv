@@ -14,8 +14,10 @@ class PrepTransformer():
         - 'stem' -> используется стемминг
         - None -> не применяется ни один из способов"""
         self.how = how
+        
         #Загружаем модель из библиотеки spacy для токенизации и лемматизации
         self.nlp = spacy.load('ru_core_news_md')
+        self.nlp.max_length = 2030000
         self.stop_words = stop_words
     
         #Делаем трансформер для стемминга
@@ -29,13 +31,15 @@ class PrepTransformer():
         #Используем метод лемматизации (токенизация, приведение к ниж. регистру и лематизация происходит в рамках одной модели)
         # и делаем проверку на стоп-слова
         if self.how == 'lemma':
-            self.tokens = [w.lemma_ for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
+            self.tokens = [w.lemma_ for w in self.doc]
+            # self.tokens = [w.lemma_ for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
             self.filtered_tokens = [token for token in self.tokens if token not in self.stop_words]
             return ' '.join(self.filtered_tokens)
     
         #Если выбрали не лемматизацию, то делаем токенизацию, приведение к нижнему регистру, проверку на стоп-слова
         else:
-            self.tokens = [w.text for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
+            self.tokens = [w.text for w in self.doc]
+            # self.tokens = [w.text for w in self.doc if (w.pos_!='SPACE') and (w.pos_!='PUNCT')]
             self.tokens_low = [token.lower() for token in self.tokens]
             self.filtered_tokens = [token for token in self.tokens_low if token not in self.stop_words]
     

@@ -21,6 +21,7 @@ export default {
     const algoritm = ref({})
     const indexButton = ref(0)
     const accuracy = ref([])
+    const loader = ref(false);
 
     const prev_page = async () => {
       router.push({ name: 'second' })
@@ -48,6 +49,7 @@ export default {
 
 
     const post_reqest = async () => {
+      loader.value = true
       const body = {
         content: store.getters.getRequestTexts.sort(( a,b ) => a.id - b.id),
         requirements: store.getters.getRequirements
@@ -56,10 +58,13 @@ export default {
     
 
       return await UrlApi.postResume(body).then((res) => {
+       
         data.value = res.data
         console.log(res.data)
+        loader.value = false
         return res
       }).catch((error) => {
+        loader.value = false
         console.log("Ошибка загрузки данных на сервер", error)
       })
     }
@@ -73,6 +78,7 @@ export default {
       algoritm,
       fromArray,
       indexButton,
+      loader,
       allLengthTexts: computed(() => store.getters.lengthTexts),
       lengthLoadingTexts: computed(() => store.getters.lengthTexts ? store.getters.getRequestTexts ? true : false : false),
       getRequirements: computed(() => store.getters.getRequirements),
@@ -83,7 +89,8 @@ export default {
 </script>
 
 <template>
-  <div>
+    <div>
+    
     <h3>Отправьте запрос на сервер</h3>
     <div class="info">
       <p>Загруженно <span>{{ allLengthTexts }}</span> резюме</p>
@@ -97,17 +104,23 @@ export default {
       <button v-for="(items, index) in algoritm" :key="index" :data-index="index"
         :class="indexButton == index ? 'activebuttonalgoritm' : ''" class="buttonalgoritm" @click="choiseAlgoritm(index)">
         {{ items }}
-        <!-- <span></span> -->
       </button>
     </div>
+
+ 
     <TableWithStore v-if="Object.keys(data).length" @clear_all="$store.dispatch('clear')" :texts="sort_array">
+   
     </TableWithStore>
+  
     <div class="button_container">
       <ButtonNextPrev @clicks="prev_page" :active=true :right=false>Шаг №2</ButtonNextPrev>
       <ButtonNextPrev @clicks="post_reqest" :active=lengthLoadingTexts :right=true :next_icon=true>Отправить
       </ButtonNextPrev>
     </div>
-  </div>
+    <div class="loader" v-if="loader"> </div>
+
+
+</div>
 </template>
 
 <style scoped>

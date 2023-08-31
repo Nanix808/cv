@@ -59,49 +59,57 @@ export default {
     const loader = ref(false);
 
    const extractText = async (path) => {
+
+    
         let pdf = await PDFJS.getDocument(path).promise
+        pdf.workerSrc = false
         let pages = pdf.numPages
-        let pageText = []
+        let allText = ""
         for(let i=1; i<=pages; i++)
         {   
             let page = await pdf.getPage(i)
             let texts = await page.getTextContent()
             let text = texts.items.map((s)=>s.str).join(" ")
-            pageText.push(text)
+
+            allText += " " + 
+            text.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|«|»|—|•)/g, ' ')
+            .replace(/\s\s+/g, ' ')
+            .toLowerCase();
         }
-        let allText = pageText.join(" ")
+        pdf.destroy();
         return allText
    }
 
-
+  
    const filesReader = (path) =>{
       return new Promise((resolve) => {
-      const fileReader = new window.FileReader()
+      let fileReader = new window.FileReader()
       fileReader.readAsDataURL(path)
       fileReader.onload = async ()=>{
       let res = fileReader.result;
-      const text = await extractText(res)
+      let text = await extractText(res)
+ 
       resolve(text);  
     }
 
     });
   }
 
-
-
     const uploadFile = async (event) => {
       
       for(let i=0; i< event.target.files.length; i++){
+    
         loader.value = true
-        const file_path = event.target.files[i]
+        let file_path = event.target.files[i]
         let text = await filesReader(file_path)
-        const fileText = Object.assign({}, {
+        let fileText = Object.assign({}, {
             file_path : file_path,
             text : text
         })
 
           
         store.dispatch('addtext', fileText )
+    
     } 
     loader.value = false
       

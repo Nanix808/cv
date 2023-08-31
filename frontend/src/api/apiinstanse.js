@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const baseURL = 'http://127.0.0.1:8000/api/v2/'
+// const baseURL = 'https://scaner.3s.by/api/v2/'
 
 const defaultConfig = {
     baseURL: baseURL,
