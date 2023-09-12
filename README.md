@@ -2,7 +2,6 @@
 
 <p align="center">  
 <img src="https://img.shields.io/badge/python-3.11 -blueviolet.svg">
-<img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" >
 
 </p>
 
@@ -19,6 +18,8 @@
 ## ***Описание***
 
 Сервис предназначен для ранжирования резюме по заданным ключевым словам.
+
+Демонстрация https://scanercv.3s.by/
 
 
 
