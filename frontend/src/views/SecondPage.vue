@@ -19,8 +19,8 @@ export default {
     })
 
     const next_page = () => {
-      router.push({ name: 'finish' })
       store.dispatch('addrequirements', comment)
+      router.push({ name: 'finish' })
     }
 
     const prev_page = () => {

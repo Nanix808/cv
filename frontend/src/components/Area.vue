@@ -1,32 +1,14 @@
 <template>
   <div class="file-uploader">
     <div class="loader" v-if="loader"></div>
-    <div
-      class="file-uploader__wrapper"
-      :class="{ 'file-uploader__wrapper--drag': isDragStarted }"
-    >
-      <input
-        accept="application/pdf"
-        ref="input"
-        class="file-uploader__input"
-        type="file"
-        multiple
-        title=""
-        @change="uploadFile"
-        @dragenter="isDragStarted = true"
-        @dragleave="isDragStarted = false"
+    <div class="file-uploader__wrapper" :class="{ 'file-uploader__wrapper--drag': isDragStarted }">
+      <input accept="application/pdf" ref="input" class="file-uploader__input" type="file" multiple title=""
+        @change="uploadFile" @dragenter="isDragStarted = true" @dragleave="isDragStarted = false">
 
-      >
-      
       {{ isDragStarted ? '' : uploadText }}
-      <img
-        v-show="isDragStarted"
-        src="@/assets/images/upload.svg"
-        class="file-uploader__icon"
-        alt="Загрузите фото"
-      >
+      <img v-show="isDragStarted" src="@/assets/images/upload.svg" class="file-uploader__icon" alt="Загрузите фото">
     </div>
- 
+
 
   </div>
 </template>
@@ -41,78 +23,69 @@ import { useStore } from 'vuex'
 import * as PDFJS from "pdfjs-dist";
 import "pdfjs-dist/web/pdf_viewer.css";
 // PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.js`;
-PDFJS.GlobalWorkerOptions.workerSrc =`https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS.version}/build/pdf.worker.min.js`;
+PDFJS.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS.version}/build/pdf.worker.min.js`;
 // PDFJS.GlobalWorkerOptions.workerSrc ="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.9.179/build/pdf.worker.min.js";
-
 
 export default {
   components: {
-  
+
   },
   emits: ['update:modelValue'],
 
   setup() {
-  
+
     const store = useStore()
     const input = ref(null);
     const isDragStarted = ref(false);
     const loader = ref(false);
 
-   const extractText = async (path) => {
+    const extractText = async (path) => {
 
-    
-        let pdf = await PDFJS.getDocument(path).promise
-        pdf.workerSrc = false
-        let pages = pdf.numPages
-        let allText = ""
-        for(let i=1; i<=pages; i++)
-        {   
-            let page = await pdf.getPage(i)
-            let texts = await page.getTextContent()
-            let text = texts.items.map((s)=>s.str).join(" ")
 
-            allText += " " + 
-            text.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=|«|»|—|•)/g, ' ')
-            .replace(/\s\s+/g, ' ')
-            .toLowerCase();
-        }
-        pdf.destroy();
-        return allText
-   }
+      let pdf = await PDFJS.getDocument(path).promise
+      pdf.workerSrc = false
+      let pages = pdf.numPages
+      let allText = ""
+      for (let i = 1; i <= pages; i++) {
+        let page = await pdf.getPage(i)
+        let texts = await page.getTextContent()
+        let text = texts.items.map((s) => s.str).join(" ")
 
-  
-   const filesReader = (path) =>{
-      return new Promise((resolve) => {
-      let fileReader = new window.FileReader()
-      fileReader.readAsDataURL(path)
-      fileReader.onload = async ()=>{
-      let res = fileReader.result;
-      let text = await extractText(res)
- 
-      resolve(text);  
+        allText += " " + text
+      }
+      pdf.destroy();
+      return allText
     }
 
-    });
-  }
+    const filesReader = (path) => {
+      return new Promise((resolve) => {
+        let fileReader = new window.FileReader()
+        fileReader.readAsDataURL(path)
+        fileReader.onload = async () => {
+          let res = fileReader.result;
+          let text = await extractText(res)
+
+          resolve(text);
+        }
+
+      });
+    }
 
     const uploadFile = async (event) => {
-      
-      for(let i=0; i< event.target.files.length; i++){
-    
+
+      for (let i = 0; i < event.target.files.length; i++) {
+
         loader.value = true
         let file_path = event.target.files[i]
         let text = await filesReader(file_path)
         let fileText = Object.assign({}, {
-            file_path : file_path,
-            text : text
+          file_path: file_path,
+          text: text
         })
+        store.dispatch('addtext', fileText)
+      }
+      loader.value = false
 
-          
-        store.dispatch('addtext', fileText )
-    
-    } 
-    loader.value = false
-      
       if (input.value) {
         input.value.value = '';
       }
@@ -120,19 +93,18 @@ export default {
       isDragStarted.value = false;
     };
 
-
     const uploadText = computed(() => {
-  
+
       if (store.getters.lengthTexts > 0) {
         return `Вы загрузили ${store.getters.lengthTexts} резюме`;
       }
 
-      
+
 
       if (store.getters.lengthTexts === 0) {
         return 'Загрузите резюме';
       }
-    
+
     });
 
     return {
@@ -223,6 +195,7 @@ export default {
     width: 50px;
   }
 }
+
 .loader {
   position: absolute;
   top: 0px;
