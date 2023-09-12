@@ -7,7 +7,8 @@ const defaultConfig = {
     baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json'
-    }
+    }, 
+    timeout: 300000
 }
 const DefaultApiInstance = axios.create(defaultConfig)
 export {DefaultApiInstance}
